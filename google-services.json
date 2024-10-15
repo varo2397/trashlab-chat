@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "199585724402",
+    "project_id": "trashlab-chat-56e3d",
+    "storage_bucket": "trashlab-chat-56e3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199585724402:android:f233c76ca2b0f7d33add6b",
+        "android_client_info": {
+          "package_name": "com.varo2397.trashlabchat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApUwQWNUjsIj0UHFlAq6N9z-BNZxtw6tQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
