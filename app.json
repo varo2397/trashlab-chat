@@ -15,7 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.varo2397.trashlab-chat",
-      "googleServicesFile": "./GoogleService-Info.plist"      
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
@@ -33,7 +33,6 @@
     "plugins": [
       "expo-router",
       "@react-native-firebase/app",
-      
       [
         "expo-build-properties",
         {
@@ -41,8 +40,8 @@
             "useFrameworks": "static"
           }
         }
-      ]
-
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
