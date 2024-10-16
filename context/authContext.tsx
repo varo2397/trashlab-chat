@@ -2,6 +2,7 @@ import { createContext, type PropsWithChildren, useState, useEffect } from 'reac
 import { User } from '@/types/user';
 import { loginOrCreateUser } from '@/firebase/firestore/user';
 import { router } from 'expo-router';
+import { getItemAsyncStorage, setItemAsyncStorage } from '@/services/async-storage';
 
 export const AuthContext = createContext<{
   signIn: (username: string) => Promise<void>;
@@ -15,8 +16,6 @@ export const AuthContext = createContext<{
   user: null,
 });
 
-
-
 export function AuthProvider({ children }: PropsWithChildren) {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
@@ -24,6 +23,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const signIn = async (username: string) => {
     setIsLoading(true);
     const loggedInUser = await loginOrCreateUser(username);
+    await setItemAsyncStorage('user', loggedInUser);
     setIsLoading(false);
     if(loggedInUser) {
       setUser(loggedInUser);
@@ -35,6 +35,24 @@ export function AuthProvider({ children }: PropsWithChildren) {
     setUser(null);
     router.replace('/sign-in');
   }
+
+  const getUserFromStorage = async () => {
+    const user = await getItemAsyncStorage<User>('user');
+    if(user) {
+      setUser(user);
+      router.replace('/chat');
+    }
+  }
+
+  useEffect(() => {
+    getUserFromStorage();
+  }, []);
+
+  useEffect(() => {
+    if(!user) {
+      router.replace('/sign-in');
+    }
+  }, [user]);
 
   return (
     <AuthContext.Provider value={{

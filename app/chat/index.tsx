@@ -1,27 +1,30 @@
-import React from 'react';
-import { View, FlatList, Text, StyleSheet } from 'react-native';
+import ChatItem from '@/components/chat/chatItem';
+import { AuthContext } from '@/context/authContext';
+import { watchUserChats } from '@/firebase/firestore/chat';
+import { Chat } from '@/types/chat';
+import React, {useContext, useEffect, useState} from 'react';
+import { View, FlatList, StyleSheet, Text } from 'react-native';
 
 const Home: React.FC = () => {
-    const data = [
-        { id: '1', name: 'Item 1' },
-        { id: '2', name: 'Item 2' },
-        { id: '3', name: 'Item 3' },
-        { id: '4', name: 'Item 4' },
-        { id: '5', name: 'Item 5' },
-    ];
-
-    const renderItem = ({ item }: { item: { id: string; name: string } }) => (
-        <View style={{ padding: 10 }}>
-            <Text>{item.name}</Text>
-        </View>
-    );
+    const [chats, setChats] = useState<Chat[]>([]);
+    const {user} = useContext(AuthContext);
+    
+    useEffect(() => {
+        let unsubscribe: any;
+        if(user?.userId) {
+            unsubscribe = watchUserChats(user.username, (chats) => setChats(chats));
+        }
+    }, [user, setChats]);
+    
 
     return (
         <View style={styles.container}>
             <FlatList
-                data={data}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
+                style={styles.list}
+                data={chats}
+                renderItem={({item}) => <ChatItem chat={item} />}
+                keyExtractor={(item) => item.chatId}
+                ListEmptyComponent={() => <View><Text>No chats</Text></View>}
             />
         </View>
     );
@@ -30,9 +33,15 @@ const Home: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',   
+    },
+    list: {
+        backgroundColor: 'white',
+        paddingHorizontal: 24,
+        paddingVertical: 32,
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
     }
+    
 });
 
 export default Home;
