@@ -3,6 +3,7 @@ import { Redirect, Stack } from 'expo-router';
 import { AuthContext } from '@/context/authContext';
 import { useContext } from 'react';
 import Loader from '@/components/loader';
+import ChatStack from '@/components/chat/chatStack';
 
 const HomeLayout = () => {
   const { isLoading, user } = useContext(AuthContext);
@@ -14,7 +15,9 @@ const HomeLayout = () => {
     return <Redirect href="/sign-in" />;
   }
 
-  return <Stack />;
+  return <Stack>
+    <Stack.Screen name='index' options={{header: () => <ChatStack />}} />
+  </Stack>;
 }
 
 export default HomeLayout;

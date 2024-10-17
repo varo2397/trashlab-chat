@@ -12,7 +12,7 @@ type Props = {
     onPressIcon?: () => void
 }
 
-const TextInput = ({textInputProps, color = Colors.black, hintLabel, icon, label, onPressIcon}: Props) => {
+const TextInput = ({textInputProps, color = Colors.black100, hintLabel, icon, label, onPressIcon}: Props) => {
     return (
         <>
             {label && <Text style={styles.labelText}>{label}</Text>}

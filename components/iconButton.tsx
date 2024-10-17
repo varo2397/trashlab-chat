@@ -11,7 +11,7 @@ type Props = {
 }
 const DEFAULT_ICON_SIZE = 24;
 
-const IconButton = ({onPress, size = DEFAULT_ICON_SIZE, color = Colors.black, name}: Props) => {
+const IconButton = ({onPress, size = DEFAULT_ICON_SIZE, color = Colors.black100, name}: Props) => {
     return (
         <TouchableOpacity onPress={onPress} style={{width: size, height: size}}>
             <FontAwesome5 name={name} color={color} size={size} />

@@ -8,6 +8,7 @@ import { AuthContext } from '@/context/authContext';
 import { sendMessage } from '@/firebase/firestore/message';
 import MessageBubble from '@/components/conversation/messageBubble';
 import IconButton from '@/components/iconButton';
+import { Colors } from '@/constants/Colors';
 
 const Conversation = () => {
     const {user} = useContext(AuthContext);

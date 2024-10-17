@@ -1,4 +1,5 @@
 import ChatItem from '@/components/chat/chatItem';
+import { Colors } from '@/constants/Colors';
 import { AuthContext } from '@/context/authContext';
 import { watchUserChats } from '@/firebase/firestore/chat';
 import { Chat } from '@/types/chat';
@@ -33,6 +34,7 @@ const Home: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: Colors.purple70,
     },
     list: {
         backgroundColor: 'white',
