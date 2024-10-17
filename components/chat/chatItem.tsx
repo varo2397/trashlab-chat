@@ -31,7 +31,7 @@ const ChatItem = ({chat}: Props) => {
         }
     }, [chat.lastMessageTimeStamp]);
     return (
-        <TouchableOpacity style={styles.container} onPress={() => router.push({ pathname: '/chat/conversation', params: {chatId: chat.chatId}})}>
+        <TouchableOpacity style={styles.container} onPress={() => router.push({ pathname: '/chat/conversation', params: {chatId: chat.chatId, otherUser}})}>
             <UserCircleInitial text={otherUser || ''} size={64}/>
             <View style={styles.nameAndLastMessageContainer}>
                 <Text style={styles.nameText}>{otherUser}</Text>

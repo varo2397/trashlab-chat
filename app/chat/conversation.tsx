@@ -16,7 +16,7 @@ const Conversation = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
     const onPressSend = () => {
-        if(chatId && user) {
+        if(chatId && user && newMessage) {
             sendMessage(chatId, user.username, newMessage);
             setNewMessage('');
         }
@@ -29,28 +29,30 @@ const Conversation = () => {
     }, []);
     return (
         <View style={styles.container}>
-            <FlatList 
-                contentContainerStyle={styles.listContainer}
-                data={messages} 
-                renderItem={({item}) => 
-                    <MessageBubble 
-                        otherUsername={item.senderName !== user?.username ? item.senderName : undefined} 
-                        message={item.text || ''} 
-                        time={item.sentAt.toDate()}
-                    />
-                }
-                ListHeaderComponent={() => <View style={styles.listheader} />}
-            />
-            <View style={styles.bottomContainer}>
-                <TextInput 
-                    onPressIcon={onPressSend} 
-                    textInputProps={{
-                        value: newMessage, 
-                        onChangeText: (text) => setNewMessage(text)
-                    }}
+            <View style={styles.content}>
+                <FlatList 
+                    contentContainerStyle={styles.listContainer}
+                    data={messages} 
+                    renderItem={({item}) => 
+                        <MessageBubble 
+                            otherUsername={item.senderName !== user?.username ? item.senderName : undefined} 
+                            message={item.text || ''} 
+                            time={item.sentAt.toDate()}
+                        />
+                    }
+                    ListHeaderComponent={() => <View style={styles.listheader} />}
                 />
-                <IconButton name='camera' />
-                <IconButton name='arrow-right' />
+                <View style={styles.bottomContainer}>
+                    <TextInput 
+                        onPressIcon={onPressSend} 
+                        textInputProps={{
+                            value: newMessage, 
+                            onChangeText: (text) => setNewMessage(text)
+                        }}
+                    />
+                    <IconButton name='camera' color={Colors.darkPurple50}/>
+                    <IconButton name='arrow-right' color={Colors.darkPurple50} />
+                </View>
             </View>
         </View>
     );
@@ -58,15 +60,21 @@ const Conversation = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: Colors.purple70,
+    },
+    content: {
+        flex: 1,
         paddingBottom: 28,
         paddingHorizontal: 24,
+        borderTopRightRadius: 40,
+        borderTopLeftRadius: 40,
+        backgroundColor: Colors.white100,
     },
     listContainer: {
         flexGrow: 1,
     },
     listheader: {
-        borderTopRightRadius: 40,
-        borderTopLeftRadius: 40,
+        
         paddingVertical: 24,
         justifyContent: 'center',
         alignItems: 'center',

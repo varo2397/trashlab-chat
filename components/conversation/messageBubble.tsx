@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { format } from 'date-fns';
 import UserCircleInitial from '../userCircleInitial';
+import { Colors } from '@/constants/Colors';
 
 type Props = {
     message: string;
@@ -10,12 +11,14 @@ type Props = {
 }
 const MessageBubble = ({message, otherUsername, time}: Props) => {
     return (
-        <View style={[styles.container, !otherUsername ? styles.messageRight : {}]}>
+        <View style={[styles.container, !otherUsername && styles.containerRight]}>
             {otherUsername && <UserCircleInitial text={otherUsername} size={24} />
             }
-            <View style={[styles.dateAndMessageContainer, !otherUsername ? styles.dateAndMessageContainerRight : {}]}>
-                <Text style={styles.messageContainer}>{message}</Text>
-                <Text>{format(time, 'h:mm a')}</Text>
+            <View style={[styles.dateAndMessageContainer, !otherUsername && styles.dateAndMessageContainerRight ]}>
+                <View style={[styles.messageContainer, !otherUsername && styles.messageContainerRight]}>
+                    <Text style={[styles.message, !otherUsername && styles.messageRight]}>{message}</Text>
+                </View>
+                <Text style={styles.time}>{format(time, 'h:mm a')}</Text>
             </View>
         </View>
     );
@@ -28,18 +31,27 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 8,
     },
-    messageRight: {
+    containerRight: {
         justifyContent: 'flex-end',
         alignSelf: 'flex-end',
     },
     messageContainer: {
         padding: 12,
+        backgroundColor: Colors.darkPurple90,
         borderRadius: 12,
         width: '100%',
-        borderColor: 'red',
-        borderWidth: 1,
         marginBottom: 4,
+    },
+    messageContainerRight: {
+        backgroundColor: Colors.darkPurple40
+    },
+    message: {
+        color: Colors.darkBlue20,
         textAlign: 'left',
+        fontSize: 16,
+    },
+    messageRight: {
+        color: Colors.white100,
     },
     dateAndMessageContainer: {
         flexGrow: 1,
@@ -47,6 +59,10 @@ const styles = StyleSheet.create({
     dateAndMessageContainerRight: {
         alignItems: 'flex-end',
     },
+    time: {
+        fontSize: 14,
+        color: Colors.grey30,
+    }
 })
 
 export default MessageBubble;
