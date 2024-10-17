@@ -1,9 +1,11 @@
 import React, { useContext, useMemo } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Chat } from '@/types/chat';
 import { AuthContext } from '@/context/authContext';
 import { Colors } from '@/constants/Colors';
 import {format, differenceInHours, differenceInDays} from 'date-fns';
+import { router } from 'expo-router';
+import UserCircleInitial from '../userCircleInitial';
 
 type Props = {
     chat: Chat;
@@ -15,7 +17,6 @@ const LESS_THAN_A_WEEK = 7
 const ChatItem = ({chat}: Props) => {
     const {user} = useContext(AuthContext);
     const otherUser = chat.participants.find((username) => username !== user?.username)
-    const otherUserInitial = otherUser?.charAt(0);
     const lastMesageTime = useMemo(() => {
         const now = new Date();
         const date = chat.lastMessageTimeStamp.toDate();
@@ -30,10 +31,8 @@ const ChatItem = ({chat}: Props) => {
         }
     }, [chat.lastMessageTimeStamp]);
     return (
-        <View style={styles.container}>
-            <View style={styles.bubbleContainer}>
-                <Text style={styles.bubble}>{otherUserInitial}</Text>
-            </View>
+        <TouchableOpacity style={styles.container} onPress={() => router.push({ pathname: '/chat/conversation', params: {chatId: chat.chatId}})}>
+            <UserCircleInitial text={otherUser || ''} size={64}/>
             <View style={styles.nameAndLastMessageContainer}>
                 <Text style={styles.nameText}>{otherUser}</Text>
                 <Text style={styles.lastMessageText}>{chat.lastMessage}</Text>
@@ -41,7 +40,7 @@ const ChatItem = ({chat}: Props) => {
             <View style={styles.lastmessageTimeContainer}>
                 <Text>{lastMesageTime}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
@@ -70,6 +69,7 @@ const styles = StyleSheet.create({
     nameAndLastMessageContainer: {
         flexGrow: 1,
         justifyContent: 'space-evenly',
+        marginLeft: 12,
     },
     nameText: {
         fontSize: 18,

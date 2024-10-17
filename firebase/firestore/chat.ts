@@ -1,4 +1,4 @@
-import { Chat } from '@/types/chat';
+import { Chat, Message } from '@/types/chat';
 import firestore from '@react-native-firebase/firestore';
 
 export const watchUserChats = async (username: string, onSetChats: (chats: Chat[]) => void) => {
@@ -22,3 +22,27 @@ export const watchUserChats = async (username: string, onSetChats: (chats: Chat[
         }
       );
 }
+
+export const watchIndividualChat = async (chatId: string, onSetChat: (chat: Message[]) => void) => {
+    firestore()
+      .collection('chats')
+      .doc(chatId)
+      .collection('messages')
+      .orderBy('sentAt', 'asc') // Order by timestamp (ascending order)
+      .onSnapshot(
+        (snapshot) => {
+          const chatMessages: Message[] = [];
+          snapshot.forEach((doc) => {
+            chatMessages.push({
+                ...doc.data() as Message,
+                messageId: doc.id,
+            });
+          });
+          onSetChat(chatMessages);
+        },
+        (error) => {
+          console.error('Error fetching messages:', error);
+        }
+      );
+}
+

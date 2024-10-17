@@ -1,7 +1,7 @@
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 
 export type Message = {
-    senderId: string;
+    senderName: string;
     text?: string;
     imageUrl?: string;
     sentAt: FirebaseFirestoreTypes.Timestamp;
@@ -21,6 +21,7 @@ export type Chat = {
     participants: string[];
     lastMessage: string;
     lastMessageTimeStamp: FirebaseFirestoreTypes.Timestamp;
+    lastMessageSender: string;
     messages?: FirebaseFirestoreTypes.DocumentReference;
     chatId: string;
 };
