@@ -33,3 +33,43 @@ export const sendMessage = async (chatId: string, senderName: string, messageTex
       console.error('Error sending message: ', error);
     }
   };
+
+export const likeMessage = async (chatId: string, messageId: string, userSender: string) => {
+  try {
+    // Reference to the specific message inside the messages subcollection
+    const messageRef = firestore()
+      .collection('chats')
+      .doc(chatId)
+      .collection('messages')
+      .doc(messageId);
+
+    // Update the 'likes' array field by adding the userId if it's not already there
+    await messageRef.update({
+      likes: firestore.FieldValue.arrayUnion(userSender),
+    });
+
+    console.log('Message liked successfully!');
+  } catch (error) {
+    console.error('Error liking message:', error);
+  }
+};
+
+export const unlikeMessage = async (chatId: string, messageId: string, userSender: string) => {
+  try {
+    // Reference to the specific message inside the messages subcollection
+    const messageRef = firestore()
+      .collection('chats')
+      .doc(chatId)
+      .collection('messages')
+      .doc(messageId);
+
+    // Use Firestore arrayRemove to remove the userId from the 'likes' array
+    await messageRef.update({
+      likes: firestore.FieldValue.arrayRemove(userSender),
+    });
+
+    console.log('Message unliked successfully!');
+  } catch (error) {
+    console.error('Error unliking message:', error);
+  }
+};

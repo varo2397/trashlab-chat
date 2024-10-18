@@ -13,4 +13,5 @@ export enum Colors {
   darkPurple40 = '#474C85',
   darkPurple90 = '#DEDFED',
   grey30 = '#4D4D4D',
+  red50 = '#FF0043'
 };

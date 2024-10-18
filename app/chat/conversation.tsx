@@ -5,7 +5,7 @@ import TextInput from '@/components/textInput';
 import { Message } from '@/types/chat';
 import { watchIndividualChat } from '@/firebase/firestore/chat';
 import { AuthContext } from '@/context/authContext';
-import { sendMessage } from '@/firebase/firestore/message';
+import { likeMessage, sendMessage, unlikeMessage } from '@/firebase/firestore/message';
 import MessageBubble from '@/components/conversation/messageBubble';
 import IconButton from '@/components/iconButton';
 import { Colors } from '@/constants/Colors';
@@ -15,12 +15,25 @@ const Conversation = () => {
     const {chatId} = useLocalSearchParams<{chatId: string}>();
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
+    
     const onPressSend = () => {
         if(chatId && user && newMessage) {
             sendMessage(chatId, user.username, newMessage);
             setNewMessage('');
         }
     }
+
+    const onDoubleTapMessage = async(messageId: string, likes: string[]) => {
+        console.log(likes, 'likes');
+        const hasLiked = likes.includes(user?.username || '');
+        console.log(hasLiked, 'hasLiked');
+        if(hasLiked) {
+            await unlikeMessage(chatId, messageId, user?.username || '');
+        } else {
+            await likeMessage(chatId, messageId, user?.username || '');
+        }
+    }
+
     useEffect(() => {
         let unsubscribe: any;
         if(chatId) {
@@ -38,6 +51,8 @@ const Conversation = () => {
                             otherUsername={item.senderName !== user?.username ? item.senderName : undefined} 
                             message={item.text || ''} 
                             time={item.sentAt.toDate()}
+                            onDoubleTap={() => onDoubleTapMessage(item.messageId, item.likes)}
+                            likes={item.likes}
                         />
                     }
                     ListHeaderComponent={() => <View style={styles.listheader} />}

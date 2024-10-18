@@ -9,13 +9,14 @@ type Props = {
     color?: Colors;
     name: string;
     style?: StyleProp<ViewStyle>;
+    isSolid?: boolean;
 }
 const DEFAULT_ICON_SIZE = 24;
 
-const IconButton = ({onPress, size = DEFAULT_ICON_SIZE, color = Colors.black100, name, style}: Props) => {
+const IconButton = ({onPress, size = DEFAULT_ICON_SIZE, color = Colors.black100, name, style, isSolid}: Props) => {
     return (
         <TouchableOpacity onPress={onPress} style={{width: size, height: size}}>
-            <FontAwesome5 name={name} color={color} size={size} style={style}/>
+            <FontAwesome5 name={name} color={color} size={size} style={style} solid={isSolid}/>
         </TouchableOpacity>
     );
 };
