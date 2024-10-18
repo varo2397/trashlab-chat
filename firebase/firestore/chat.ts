@@ -8,7 +8,6 @@ export const watchUserChats = async (username: string, onSetChats: (chats: Chat[
       .onSnapshot(
         (snapshot) => {
           const userChats: Chat[] = [];
-          console.log(snapshot.docs, 'snapshot');
           snapshot.forEach((doc) => {
             userChats.push({
                 ...doc.data() as Chat,
@@ -28,7 +27,7 @@ export const watchIndividualChat = async (chatId: string, onSetChat: (chat: Mess
       .collection('chats')
       .doc(chatId)
       .collection('messages')
-      .orderBy('sentAt', 'asc') // Order by timestamp (ascending order)
+      .orderBy('sentAt', 'desc') // Order by timestamp (ascending order)
       .onSnapshot(
         (snapshot) => {
           const chatMessages: Message[] = [];

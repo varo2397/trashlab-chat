@@ -4,7 +4,7 @@ export type Message = {
     senderName: string;
     text?: string;
     imageUrl?: string;
-    sentAt: FirebaseFirestoreTypes.Timestamp;
+    sentAt?: FirebaseFirestoreTypes.Timestamp;
     likes: string[];
     readBy: {
         userId: string;

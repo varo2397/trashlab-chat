@@ -1,4 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
+import { uploadImageToStorage } from '../storage/image';
 export const sendMessage = async (chatId: string, senderName: string, messageText: string) => {
     try {
       // Reference to the messages subcollection in the specific chat
@@ -32,7 +33,46 @@ export const sendMessage = async (chatId: string, senderName: string, messageTex
     } catch (error) {
       console.error('Error sending message: ', error);
     }
-  };
+};
+
+export const sendImageMessage = async (chatId: string, senderName: string, imageUri: string) => {
+  try {
+    // Upload the image to Firebase Storage
+    const imageUrl = await uploadImageToStorage(imageUri);
+
+    if (!imageUrl) {
+      throw new Error('Failed to upload image');
+    }
+
+    // Reference to the messages subcollection
+    const messageRef = firestore()
+      .collection('chats')
+      .doc(chatId)
+      .collection('messages');
+
+    // Send the message with the image URL and optional text
+    await messageRef.add({
+      senderName: senderName,
+      text: '',
+      imageUrl,  // Store the image URL in the message
+      sentAt: firestore.FieldValue.serverTimestamp(),
+      likes: [],  // Initialize likes array
+      readBy: [],
+    });
+
+    // Update the last message in the chat document
+    const chatRef = firestore().collection('chats').doc(chatId);
+    await chatRef.update({
+      lastMessage: 'Image',
+      lastMessageTimestamp: firestore.FieldValue.serverTimestamp(),
+      lastMessageSender: senderName,
+    });
+
+    console.log('Image message sent successfully!');
+  } catch (error) {
+    console.error('Error sending image message:', error);
+  }
+};
 
 export const likeMessage = async (chatId: string, messageId: string, userSender: string) => {
   try {

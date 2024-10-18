@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { format } from 'date-fns';
 import UserCircleInitial from '../userCircleInitial';
 import { Colors } from '@/constants/Colors';
@@ -10,11 +10,12 @@ import IconButton from '../iconButton';
 type Props = {
     message: string;
     otherUsername?: string;
-    time: Date;
+    time?: Date;
     onDoubleTap: () => void;
     likes: Message['likes'];
+    messageType: 'text' | 'image';
 }
-const MessageBubble = ({message, otherUsername, time, onDoubleTap, likes}: Props) => {
+const MessageBubble = ({message, otherUsername, time, onDoubleTap, likes, messageType}: Props) => {
 
     const onPressDoubleTap = (event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) => {
         if (event.nativeEvent.state === State.ACTIVE) {
@@ -32,15 +33,15 @@ const MessageBubble = ({message, otherUsername, time, onDoubleTap, likes}: Props
                     numberOfTaps={2}
                 >
                         <View style={[styles.messageContainer, !otherUsername && styles.messageContainerRight]}>
-                            <Text style={[styles.message, !otherUsername && styles.messageRight]}>{message}</Text>
-                            {likes.length > 0 && <View style={styles.likesContainer}>
+                            {messageType === 'image' ? <Image source={{uri: message}} style={{width: 200, height: 200, borderRadius: 12}} /> : <Text style={[styles.message, !otherUsername && styles.messageRight]}>{message}</Text>}
+                            {likes.length > 0 && <View style={[styles.likesContainer, !otherUsername && styles.likesContainerRight]}>
                                 <IconButton name="heart" size={18} color={Colors.red50} isSolid/>
                                 {likes.length > 1 && <Text style={styles.likeText}>{likes.length}</Text>}
                             </View>}
                         </View>
                 </TapGestureHandler>
                 
-                <Text style={styles.time}>{format(time, 'h:mm a')}</Text>
+                {time && <Text style={styles.time}>{format(time, 'h:mm a')}</Text>}
             </View>
         </View>
     );
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     likesContainerRight: {
-        right: 0,
+        right: 'auto',
         left: 12,
     },
     likeText: {
