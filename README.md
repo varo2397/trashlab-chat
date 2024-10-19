@@ -1,6 +1,4 @@
-# Welcome to your Expo app 👋
-
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# Installation
 
 ## Get started
 
@@ -9,42 +7,91 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    ```bash
    npm install
    ```
-
-2. Start the app
+2. Create the ios and android folders
 
    ```bash
-    npx expo start
+   npx expo prebuild --clean // this is just to make sure you have everything ready
+   ```
+3. Start the app
+
+   ```bash
+    npx expo run:ios or npx expo run:ios
    ```
 
-In the output, you'll find options to open the app in a
+# Folder structure
+├── app // default expo folder where to keep the screens
+├── assets // storage of static assets like images and fonts
+├── components // if a component belongs to a screen it's a folder with the name of the route
+├── constants // keep constants used throughout the app, colors in ths case
+├── context // place to kepp all global state management
+├── firebase // each firebase feature used, has it own folder with files specific to one feature
+├── services // abstractions of packages so that if in the feature I want to change the implementation, I can do it one place
+├── types // types manly for backend return objects
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+# Firestore architecture 
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+1. Users Collection (users)
+Purpose: Stores basic user information, since the user is not the focus of this app
+Document ID: Typically, the document ID is the userId, which uniquely identifies each user.
+Fields:
+username: The user’s display name.
+Example:
+```
+users/
+  userId1
+  userId2
+  userId3
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Chats Collection (chats)
+Purpose: Stores metadata about each chat between users, such as participants, the last message sent, and timestamps.
+Document ID: The chatId, which is a unique identifier for each conversation.
+Fields:
+participants: An array of user IDs (e.g., ["username1", "username2"]) who are part of the chat.
+lastMessage: A preview of the last message sent in the chat. Ths is to keep things simpler and not have to search the conversation each time we just wanted the last message
+lastMessageTimestamp: A timestamp for the last message.
+createdAt: Timestamp for when the chat was created.
+Example:
+```
+chats/
+  chatId1
+  chatId2
+```
 
-## Learn more
+3. Messages Subcollection (messages)
+Purpose: Stores all messages exchanged between participants in a specific chat. This is a subcollection inside each chat document.
+Document ID: The messageId, which uniquely identifies each message within the chat.
+Fields:
+senderName: The username of the user who sent the message.
+text: The message content in case is a text.
+timestamp: The time the message was sent.
+likedBy: An array of usernames who have liked the message.
+imageURL: The image url saved in the bucket of firebase storage
+isRead: A boolean indicating if the message has been read by the recipient(s), this wasn't implemented due to time restraints, however it exists the possibility of adding it.
+Example:
+```
+chats/
+  chatId1/
+    messages/
+      messageId1
+      messageId2
+  chatId2/
+    messages/
+      messageId3
+      messageId4
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+# Additional features that could be added 
+- Read and amount of unread messages in each conversation
+- Group chats
+- Search in contacts screen
+- Push notifications
+- Vibration when a new message when you're inside the app or when you double tap to like a message
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-## Join the community
+# Posible improvements 
+- Add eslint and prettier to the project
+- Clean up subscriptions for snapshots in firebase(Typescript kept complaining that the snapshot didn't return a unsubscribe function)
+- Create a proper design system so that styling can be more organized and easier to change in the future
+- Better error handling, the app as it is, only handles console logs for when something goes wrong, there should something to notify the user of what happened
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.

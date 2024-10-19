@@ -6,7 +6,7 @@ import React, {useContext, useState} from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const HelloWorld: React.FC = () => {
+const SignIn = () => {
     const [username, setUsername] = useState('');
     const insets = useSafeAreaInsets();
     const {signIn} = useContext(AuthContext);
@@ -83,4 +83,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default HelloWorld;
+export default SignIn;

@@ -1,20 +1,20 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-interface CircleProps {
+interface Props {
     text: string;
     size: number;
 }
 
-const UserCircleInitial: React.FC<CircleProps> = ({ text, size }) => {
-    const circleStyle = {
+const UserCircleInitial = ({ text, size }: Props) => {
+    const circleStyle = useMemo(() => ({
         width: size,
         height: size,
         borderRadius: size / 2,
-    };
-    const textStyle = {
+    }), [size]);
+    const textStyle = useMemo(() => ({
         fontSize: size * 0.62,
-    };
+    }), [size]); ;
 
     return (
         <View style={[styles.circle, circleStyle]}>

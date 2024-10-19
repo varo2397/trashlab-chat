@@ -25,7 +25,7 @@ export const pickImage = async (options: ImagePicker.ImagePickerOptions = {}) =>
   });
 
   if (!result.canceled) {
-    return result.assets[0]; // Return the selected image
+    return result.assets[0] ?? null; // Return the selected image
   }
 
   return null;
@@ -48,7 +48,7 @@ export const takePhoto = async (options: ImagePicker.ImagePickerOptions = {}) =>
   });
 
   if (!result.canceled) {
-    return result.assets[0]; // Return the taken photo
+    return result.assets[0] ?? null; // Return the taken photo
   }
 
   return null;

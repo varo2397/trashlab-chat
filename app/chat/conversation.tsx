@@ -50,7 +50,7 @@ const Conversation = () => {
     useEffect(() => {
         let unsubscribe: any;
         if(chatId) {
-            unsubscribe = watchIndividualChat(chatId, (messages) => setMessages(messages));
+            unsubscribe = watchIndividualChat(chatId, (newMessages) => setMessages(newMessages));
         }
     }, []);
     return (

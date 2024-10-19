@@ -11,9 +11,6 @@ type Props = {
 
 }
 
-const LESS_THAN_A_DAY = 24;
-const LESS_THAN_A_WEEK = 7
-
 const ContactItem = ({onPress, username, lastMesageTime, lastMessage}: Props) => {
     return (
         <TouchableOpacity style={styles.container} onPress={onPress}>

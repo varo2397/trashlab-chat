@@ -22,7 +22,6 @@ export const watchUserChats = async (username: string, onSetChats: (chats: Chat[
             }
             return 0; // In case the timestamps are undefined or missing
           });
-          console.log(sortedMessages);
           onSetChats(sortedMessages);
         },
         (error) => {

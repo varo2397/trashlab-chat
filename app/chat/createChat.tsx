@@ -9,7 +9,7 @@ import { router } from 'expo-router';
 import React, {useContext, useEffect, useState} from 'react';
 import { View, FlatList, StyleSheet, Text } from 'react-native';
 
-const CreateChat: React.FC = () => {
+const CreateChat = () => {
     const [users, setUsers] = useState<User[]>([]);
     const {user} = useContext(AuthContext);
 
@@ -35,6 +35,7 @@ const CreateChat: React.FC = () => {
                 <IconButton size={32} name='close' fontSource='Ionicons' color={Colors.white100} onPress={() => router.back()} />
             </View>
             <FlatList
+                ListHeaderComponent={() => <Text style={styles.listHeader} >All Contacts</Text>}
                 style={styles.list}
                 data={users}
                 renderItem={({item}) => <ContactItem onPress={() =>  onCreateNewChat(item.username)} username={item.username} />}
@@ -69,6 +70,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    listHeader: {
+        marginBottom: 16,
+        color: Colors.darkPurple20,
+        fontSize: 22,
+        fontWeight: '900',
     }
     
 });

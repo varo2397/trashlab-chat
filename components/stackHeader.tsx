@@ -1,5 +1,5 @@
 import { Colors } from '@/constants/Colors';
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
 import { View, Dimensions, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,7 +11,7 @@ const {height} = Dimensions.get('window');
 
 const StackHeader = ({ screenPercentage = 0.25, children }: PropsWithChildren<Props>) => {
     const insets = useSafeAreaInsets();
-    const headerStyle = {height: height * screenPercentage, paddingTop: insets.top};
+    const headerStyle = useMemo(() => ({height: height * screenPercentage, paddingTop: insets.top}), [insets, height]);
     return (
         <View style={[styles.container, headerStyle]}>
             {children}
