@@ -5,6 +5,7 @@ import { useContext } from 'react';
 import Loader from '@/components/loader';
 import ChatStack from '@/components/chat/chatStack';
 import ConversationStack from '@/components/conversation/messageStack';
+import CreateChatStack from '@/components/createChat/createChatStack';
 
 const HomeLayout = () => {
   const { isLoading, user } = useContext(AuthContext);
@@ -19,6 +20,7 @@ const HomeLayout = () => {
   return <Stack>
     <Stack.Screen name='index' options={{header: () => <ChatStack />}} />
     <Stack.Screen name='conversation' options={{header: () => <ConversationStack />}} />
+    <Stack.Screen name='createChat' options={{header: () => <CreateChatStack />}} />
   </Stack>;
 }
 

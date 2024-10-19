@@ -61,6 +61,7 @@ const Conversation = () => {
                     ref={flatListRef}
                     contentContainerStyle={styles.listContainer}
                     data={messages}
+                    keyExtractor={(item) => item.messageId}
                     onContentSizeChange={() => flatListRef.current?.scrollToEnd({animated: true})}
                     renderItem={({item}) => {
                         return  (

@@ -24,7 +24,7 @@ export const sendMessage = async (chatId: string, senderName: string, messageTex
       // Update the chat document with the last message and timestamp
     await chatRef.update({
         lastMessage: messageText,
-        lastMessageTimestamp: firestore.FieldValue.serverTimestamp(),
+        lastMessageTimeStamp: firestore.FieldValue.serverTimestamp(),
         lastMessageSender: senderName,
       });
   
@@ -64,7 +64,7 @@ export const sendImageMessage = async (chatId: string, senderName: string, image
     const chatRef = firestore().collection('chats').doc(chatId);
     await chatRef.update({
       lastMessage: 'Image',
-      lastMessageTimestamp: firestore.FieldValue.serverTimestamp(),
+      lastMessageTimeStamp: firestore.FieldValue.serverTimestamp(),
       lastMessageSender: senderName,
     });
 

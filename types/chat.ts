@@ -14,10 +14,10 @@ export type Message = {
 };
 
 export type Chat = {
-    createdAt: FirebaseFirestoreTypes.Timestamp;
+    createdAt: FirebaseFirestoreTypes.Timestamp | FirebaseFirestoreTypes.FieldValue;
     participants: string[];
     lastMessage: string;
-    lastMessageTimeStamp: FirebaseFirestoreTypes.Timestamp;
+    lastMessageTimeStamp: FirebaseFirestoreTypes.Timestamp | null;
     lastMessageSender: string;
     messages?: FirebaseFirestoreTypes.DocumentReference;
     chatId: string;
